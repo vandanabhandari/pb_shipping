@@ -140,6 +140,7 @@ def getParcelStatus(intent, session):
     url = 'https://api-sandbox.pitneybowes.com/shippingservices/v1/tracking/70150640000232418485?packageIdentifierType=TrackingNumber&carrier=USPS'
     r=requests.get(url, headers={"Authorization" : bearer})
     print('***RESPONSE****')
+    tracking_response = {}
     if(r.status_code == 200):
         tracking_response = json.loads(r.content)
     if('errors' in tracking_response and tracking_response['errors'][0]['errorCode'] == 'PB-APIM-ERR-1003') : #Access Token Expired
