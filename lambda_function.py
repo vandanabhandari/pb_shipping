@@ -52,8 +52,8 @@ def get_welcome_response():
     """
 
     session_attributes = {}
-    card_title = "Welcome"
-    speech_output = "Welcome to the USPS tracker. Please tell me your first 6 digits of tracking number"
+    card_title = "Welcome to PB Parcel Tracker"
+    speech_output = "Please say first 4 digits of tracking number, followed by word plus and then remaining digits"
     # If the user either does not reply to the welcome message or says something
     # that is not understood, they will be prompted again with this text.
     reprompt_text = "Please tell me your tracking number for usps."
@@ -119,7 +119,6 @@ def on_launch(launch_request, session):
 
 
 def oauth_request(session):
-    print("-----OAUTH-----")
     access_key = os.environ['key']
     access_key_value = "Basic "+access_key
     url = 'https://api-sandbox.pitneybowes.com/oauth/token'
