@@ -77,17 +77,33 @@ def handle_session_end_request():
 def getParcelStatus(intent, session):
     session_attributes = {}
     should_end_session = False
-    tracking_number_1 = intent['slots']['first']['value']
-    tracking_number_2 = intent['slots']['second']['value']
-    print(tracking_number_1)
-    print(tracking_number_2)
-    tracking_number = "%s%s" % (tracking_number_1, tracking_number_2)
+    tracking_number_1 = intent['slots']['One']['value']
+    tracking_number_2 = intent['slots']['Two']['value']
+    tracking_number_3 = intent['slots']['Three']['value']
+    tracking_number_4 = intent['slots']['Four']['value']
+    tracking_number_5 = intent['slots']['Five']['value']
+    tracking_number_6 = intent['slots']['Six']['value']
+    tracking_number_7 = intent['slots']['Seven']['value']
+    tracking_number_8 = intent['slots']['Eight']['value']
+    tracking_number_9 = intent['slots']['Nine']['value']
+    tracking_number_10 = intent['slots']['Ten']['value']
+    tracking_number_11= intent['slots']['Eleven']['value']
+    tracking_number_12 = intent['slots']['Twelve']['value']
+    tracking_number_13 = intent['slots']['Thirteen']['value']
+    tracking_number_14 = intent['slots']['Fourteen']['value']
+    tracking_number_15 = intent['slots']['Fifteen']['value']
+    tracking_number_16 = intent['slots']['Sixteen']['value']
+    tracking_number_17 = intent['slots']['Seventeen']['value']
+    tracking_number_18 = intent['slots']['Eighteen']['value']
+    tracking_number_19 = intent['slots']['Nineteen']['value']
+    tracking_number_20 = intent['slots']['Twenty']['value']
+    tracking_number_21 = intent['slots']['TwentyOne']['value']
+    tracking_number_22 = intent['slots']['TwentyTwo']['value']
+    tracking_number = "%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s" % (tracking_number_1, tracking_number_2,tracking_number_3, tracking_number_4,tracking_number_5, tracking_number_6,tracking_number_7, tracking_number_8,tracking_number_9, tracking_number_10,tracking_number_11, tracking_number_12,tracking_number_13, tracking_number_14,tracking_number_15, tracking_number_16,tracking_number_17, tracking_number_18,tracking_number_19, tracking_number_20,tracking_number_21, tracking_number_22)
     print("USPS Full Tracking Number ----> %s" % (tracking_number))
     bearer = "Bearer %s" % (session['access_token'])
-    print(bearer)
     url = "https://api-sandbox.pitneybowes.com/shippingservices/v1/tracking/%s?packageIdentifierType=TrackingNumber&carrier=USPS" %(tracking_number)
     r=requests.get(url, headers={"Authorization" : bearer})
-    print('***RESPONSE****')
     tracking_response = {}
     if(r.status_code == 200):
         tracking_response = json.loads(r.content)
