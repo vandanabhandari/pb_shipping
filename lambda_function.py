@@ -53,10 +53,10 @@ def get_welcome_response():
 
     session_attributes = {}
     card_title = "Welcome"
-    speech_output = "Welcome to the Alexa Skills Kit sample. "
+    speech_output = "Welcome to the USPS tracker. Please tell me your first 6 digits of tracking number"
     # If the user either does not reply to the welcome message or says something
     # that is not understood, they will be prompted again with this text.
-    reprompt_text = "Please tell me your tracking number"
+    reprompt_text = "Please tell me your tracking number for usps."
     should_end_session = False
     return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, reprompt_text, should_end_session))
@@ -71,17 +71,21 @@ def handle_session_end_request():
     return build_response({}, build_speechlet_response(
         card_title, speech_output, None, should_end_session))
 
+
 #----- get tracking ------
 
 def getParcelStatus(intent, session):
     session_attributes = {}
     should_end_session = False
-    tracking_number = intent['slots']['number']['value']
-    print("tracking_number--->")
-    print(tracking_number)
+    tracking_number_1 = intent['slots']['first']['value']
+    tracking_number_2 = intent['slots']['second']['value']
+    print(tracking_number_1)
+    print(tracking_number_2)
+    tracking_number = "%s%s" % (tracking_number_1, tracking_number_2)
+    print("USPS Full Tracking Number ----> %s" % (tracking_number))
     bearer = "Bearer %s" % (session['access_token'])
     print(bearer)
-    url = 'https://api-sandbox.pitneybowes.com/shippingservices/v1/tracking/70150640000232418485?packageIdentifierType=TrackingNumber&carrier=USPS'
+    url = "https://api-sandbox.pitneybowes.com/shippingservices/v1/tracking/%s?packageIdentifierType=TrackingNumber&carrier=USPS" %(tracking_number)
     r=requests.get(url, headers={"Authorization" : bearer})
     print('***RESPONSE****')
     tracking_response = {}
