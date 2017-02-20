@@ -1,13 +1,9 @@
 """
-This sample demonstrates a simple skill built with the Amazon Alexa Skills Kit.
-The Intent Schema, Custom Slots, and Sample Utterances for this skill, as well
-as testing instructions are located at http://amzn.to/1LzFrj6
-
-For additional samples, visit the Alexa Skills Kit Getting Started guide at
-http://amzn.to/1LGWsLG
+Code for Alexa skill to check PB tracking
 """
 
 from __future__ import print_function
+import traceback
 import requests
 import os
 import json
@@ -53,10 +49,10 @@ def get_welcome_response():
 
     session_attributes = {}
     card_title = "Welcome to PB Parcel Tracker"
-    speech_output = "Please say first 4 digits of tracking number, followed by word plus and then remaining digits"
+    speech_output = "Please give first 10 digits of tracking number"
     # If the user either does not reply to the welcome message or says something
     # that is not understood, they will be prompted again with this text.
-    reprompt_text = "Please tell me your tracking number for usps."
+    reprompt_text = "Please give first 10 digits of tracking number"
     should_end_session = False
     return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, reprompt_text, should_end_session))
@@ -71,47 +67,81 @@ def handle_session_end_request():
     return build_response({}, build_speechlet_response(
         card_title, speech_output, None, should_end_session))
 
+#----- get tracking ------
+
+def setFirstEleven(intent, session):
+    session_attributes = {}
+    should_end_session = False
+    speech_output = "Now give remaining digits"
+    reprompt_text = "Now give the next eleven numbers"
+    try:
+        tracking_number_1 = intent['slots']['One']['value']
+        tracking_number_2 = intent['slots']['Two']['value']
+        tracking_number_3 = intent['slots']['Three']['value']
+        tracking_number_4 = intent['slots']['Four']['value']
+        tracking_number_5 = intent['slots']['Five']['value']
+        tracking_number_6 = intent['slots']['Six']['value']
+        tracking_number_7 = intent['slots']['Seven']['value']
+        tracking_number_8 = intent['slots']['Eight']['value']
+        tracking_number_9 = intent['slots']['Nine']['value']
+        tracking_number_10 = intent['slots']['Ten']['value']
+        first_ten = "%s%s%s%s%s%s%s%s%s%s" % (tracking_number_1, tracking_number_2,tracking_number_3, tracking_number_4,tracking_number_5, tracking_number_6,tracking_number_7, tracking_number_8,tracking_number_9, tracking_number_10)
+        session_attributes['first_ten'] = first_ten
+        print("session after adding first ten--->")
+        print(session_attributes)
+    except Exception as app_exception:
+        traceback.print_tb
+        speech_output = "There was some problem, Please provide first ten digits of the tracking number"
+        reprompt_text = "Please say first ten digits of the tracking number"
+    return build_response(session_attributes, build_speechlet_response(
+        intent['name'], speech_output, reprompt_text, should_end_session))
 
 #----- get tracking ------
 
 def getParcelStatus(intent, session):
     session_attributes = {}
-    should_end_session = False
-    tracking_number_1 = intent['slots']['One']['value']
-    tracking_number_2 = intent['slots']['Two']['value']
-    tracking_number_3 = intent['slots']['Three']['value']
-    tracking_number_4 = intent['slots']['Four']['value']
-    tracking_number_5 = intent['slots']['Five']['value']
-    tracking_number_6 = intent['slots']['Six']['value']
-    tracking_number_7 = intent['slots']['Seven']['value']
-    tracking_number_8 = intent['slots']['Eight']['value']
-    tracking_number_9 = intent['slots']['Nine']['value']
-    tracking_number_10 = intent['slots']['Ten']['value']
-    tracking_number_11= intent['slots']['Eleven']['value']
-    tracking_number_12 = intent['slots']['Twelve']['value']
-    tracking_number_13 = intent['slots']['Thirteen']['value']
-    tracking_number_14 = intent['slots']['Fourteen']['value']
-    tracking_number_15 = intent['slots']['Fifteen']['value']
-    tracking_number_16 = intent['slots']['Sixteen']['value']
-    tracking_number_17 = intent['slots']['Seventeen']['value']
-    tracking_number_18 = intent['slots']['Eighteen']['value']
-    tracking_number_19 = intent['slots']['Nineteen']['value']
-    tracking_number_20 = intent['slots']['Twenty']['value']
-    tracking_number_21 = intent['slots']['TwentyOne']['value']
-    tracking_number_22 = intent['slots']['TwentyTwo']['value']
-    tracking_number = "%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s" % (tracking_number_1, tracking_number_2,tracking_number_3, tracking_number_4,tracking_number_5, tracking_number_6,tracking_number_7, tracking_number_8,tracking_number_9, tracking_number_10,tracking_number_11, tracking_number_12,tracking_number_13, tracking_number_14,tracking_number_15, tracking_number_16,tracking_number_17, tracking_number_18,tracking_number_19, tracking_number_20,tracking_number_21, tracking_number_22)
-    print("USPS Full Tracking Number ----> %s" % (tracking_number))
-    bearer = "Bearer %s" % (session['access_token'])
-    url = "https://api-sandbox.pitneybowes.com/shippingservices/v1/tracking/%s?packageIdentifierType=TrackingNumber&carrier=USPS" %(tracking_number)
-    r=requests.get(url, headers={"Authorization" : bearer})
-    tracking_response = {}
-    if(r.status_code == 200):
+    should_end_session = True
+    speech_output = "There was some problem in taking your input"
+    reprompt_text = "Please say remaining digits of the tracking number"
+    try:
+        tracking_number_11= intent['slots']['Eleven']['value']
+        tracking_number_12 = intent['slots']['Twelve']['value']
+        tracking_number_13 = intent['slots']['Thirteen']['value']
+        tracking_number_14 = intent['slots']['Fourteen']['value']
+        tracking_number_15 = intent['slots']['Fifteen']['value']
+        tracking_number_16 = intent['slots']['Sixteen']['value']
+        tracking_number_17 = intent['slots']['Seventeen']['value']
+        tracking_number_18 = intent['slots']['Eighteen']['value']
+        tracking_number_19 = intent['slots']['Nineteen']['value']
+        tracking_number_20 = intent['slots']['Twenty']['value']
+        tracking_number_21 = intent['slots']['TwentyOne']['value']
+        tracking_number_22 = intent['slots']['TwentyTwo']['value']
+        tracking_number = "%s%s%s%s%s%s%s%s%s%s%s%s" % (tracking_number_11,tracking_number_12, tracking_number_13, tracking_number_14,tracking_number_15, tracking_number_16,tracking_number_17, tracking_number_18,tracking_number_19, tracking_number_20,tracking_number_21, tracking_number_22)
+        print("'first_ten' not in session['attributes']--->")
+        print('first_ten' not in session['attributes'])
+        full_tracking_number = "%s%s" % (session['attributes']['first_ten'], tracking_number)
+        bearer = "Bearer %s" % (session['access_token'])
+        print("USPS FULL Tracking Number ----> %s" % (full_tracking_number))
+        url = "https://api-sandbox.pitneybowes.com/shippingservices/v1/tracking/%s?packageIdentifierType=TrackingNumber&carrier=USPS" %(full_tracking_number)
+        r=requests.get(url, headers={"Authorization" : bearer})
+        tracking_response = {}
         tracking_response = json.loads(r.content)
-    if('errors' in tracking_response and tracking_response['errors'][0]['errorCode'] == 'PB-APIM-ERR-1003') : #Access Token Expired
-        oauth_request(session)
-    print(r.content)
-    speech_output = "The status of the parcel is "+tracking_response['status']
-    reprompt_text = "The status of the parcel is "+tracking_response['status']
+        if(r.status_code == 200):
+            speech_output = "The status of the parcel is "+tracking_response['status']
+            reprompt_text = "The status of the parcel is "+tracking_response['status']
+        else:
+            speech_output = tracking_response['errors'][0]['errorDescription']
+            reprompt_text = tracking_response['errors'][0]['errorDescription']
+        print(r.content)
+    except Exception as app_exception:
+        traceback.print_tb
+        should_end_session = False
+        if ('attributes' not in session or ('attributes' in session and 'first_ten' not in session['attributes'])):
+           speech_output = "Please provide only first ten digits of the tracking number"
+           reprompt_text = "Please provide only first ten digits of the tracking number"
+        else:
+            speech_output = "There was some problem, Please say remaining digits of the tracking number"
+            reprompt_text = "Please say remaining digits of the tracking number"
     return build_response(session_attributes, build_speechlet_response(
         intent['name'], speech_output, reprompt_text, should_end_session))
 
@@ -161,6 +191,8 @@ def on_intent(intent_request, session):
     print(session['access_token'])
     # Dispatch to your skill's intent handlers
     if intent_name == "Tracking":
+        return setFirstEleven(intent, session)
+    elif intent_name == "TrackingSecond":
         return getParcelStatus(intent, session)
     elif intent_name == "AMAZON.HelpIntent":
         return get_welcome_response()
